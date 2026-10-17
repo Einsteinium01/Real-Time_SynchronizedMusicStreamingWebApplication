@@ -1,64 +1,148 @@
-# 🎵 Real-Time Synchronized Music Streaming Web Application
+<div align="center">
 
-Visit The Website: https://syncmusicstream.netlify.app/
+# 🎵 SyncMusic
 
-How to use:
-Step 1: Open the link: https://syncmusicstream.netlify.app/
-        A new room created automatically. 
-Step 2: Copy the link and share to the other users.
-        Now all the users are in the same room ready to stream the YouTube Music synchronised in all the devices.
-Step 3: Search a video in the searchbox and play it.
-        The video starts playing in all the devices in sync.
+### Real-Time Synchronized Music Streaming
 
-A real-time collaborative music streaming web application built with **Flutter Web**, **Node.js**, **Express**, and **Socket.IO**. The application allows multiple users to join a shared room and watch or listen to the same YouTube video in perfect synchronization.
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-syncmusicstream-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://syncmusicstream.netlify.app/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-4.x-010101?style=for-the-badge&logo=socketdotio&logoColor=white)](https://socket.io)
+[![License](https://img.shields.io/badge/License-Educational-blue?style=for-the-badge)](#-license)
+
+**Create a room. Share the link. Listen together — in perfect sync.**
+
+A collaborative music streaming app where multiple users join a shared room and listen to the same YouTube track, with play, pause, and seek synchronized in real time across every connected device.
+
+[Try It Live →](https://syncmusicstream.netlify.app/) · [Report Bug](https://github.com/Einsteinium01/Real-Time_SynchronizedMusicStreamingWebApplication/issues) · [Request Feature](https://github.com/Einsteinium01/Real-Time_SynchronizedMusicStreamingWebApplication/issues)
+
+</div>
+
+---
+
+<br>
+
+<img width="100%" alt="SyncMusic Screenshot" src="https://github.com/user-attachments/assets/06936dd4-5032-4b5f-bcea-4c0502e6fd8c" />
+
+<br>
+
+## ⚡ Quick Start
+
+> **No sign-up required. Three steps. Zero friction.**
+
+| Step | Action |
+|:----:|--------|
+| **1** | Open **[syncmusicstream.netlify.app](https://syncmusicstream.netlify.app/)** — a new room is created automatically |
+| **2** | **Copy the URL** and share it with friends — everyone in the same room is synced |
+| **3** | **Search & play** any YouTube track — it starts on every device simultaneously |
+
+---
 
 ## ✨ Features
 
-* 🎧 Create or join a room using a unique room code.
-* ▶️ Real-time synchronized play and pause controls.
-* ⏩ Synchronized seeking across all connected users.
-* 🔍 Search YouTube videos directly from the application.
-* 🌐 Cross-platform Flutter Web frontend.
-* ⚡ Low-latency communication using Socket.IO.
+| | Feature | Description |
+|:-:|---------|-------------|
+| 🎧 | **Instant Rooms** | Auto-generated room codes — no login, no setup |
+| ▶️ | **Synced Playback** | Real-time play, pause & seek across all participants |
+| 🔍 | **YouTube Search** | Search and play any YouTube video directly in-app |
+| 🔗 | **Shareable Links** | One URL to invite anyone into your room |
+| 🌐 | **Cross-Platform** | Runs in any modern browser (desktop & mobile) |
+| ⚡ | **Low Latency** | Sub-second sync via persistent WebSocket connections |
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    subgraph Client["🖥️ Flutter Web Client"]
+        UI["UI Layer<br/>(Dart / Flutter)"]
+        YT["YouTube Player<br/>iframe"]
+        SC["Socket.IO Client"]
+    end
+
+    subgraph Server["⚙️ Node.js Server"]
+        EX["Express + CORS"]
+        SIO["Socket.IO Server"]
+        RS["Room State Store"]
+        API["YouTube Data API<br/>Proxy"]
+    end
+
+    UI --> YT
+    UI --> SC
+    SC <-->|WebSocket| SIO
+    SIO --> RS
+    UI -->|HTTP /search| API
+    API -->|REST| YTAPI["YouTube Data API v3"]
+
+    style Client fill:#1a1a2e,stroke:#02569B,color:#fff
+    style Server fill:#1a1a2e,stroke:#339933,color:#fff
+```
+
+### How Sync Works
+
+1. A user **creates or joins** a room via a unique URL  
+2. The server maintains room state: **Video ID**, **Timestamp**, **Play/Pause status**  
+3. Any action (play, pause, seek, video change) is **broadcast** to all room members via Socket.IO  
+4. Clients reconcile their player position — if drift exceeds **1 second**, an automatic seek correction fires  
+5. A heartbeat timer sends timestamp updates every **3 seconds** to keep everyone locked in  
+
+---
 
 ## 🛠️ Tech Stack
 
+<table>
+<tr>
+<td align="center" width="50%">
+
 ### Frontend
 
-* Flutter Web
-* Dart
-* youtube_player_iframe
-* socket_io_client
+| Technology | Purpose |
+|:----------:|---------|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" width="20"/> **Flutter Web** | Cross-platform UI framework |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" width="20"/> **Dart** | Application logic |
+| **youtube_player_iframe** | Embedded YouTube player |
+| **socket_io_client** | Real-time WebSocket client |
+
+</td>
+<td align="center" width="50%">
 
 ### Backend
 
-* Node.js
-* Express.js
-* Socket.IO
+| Technology | Purpose |
+|:----------:|---------|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="20"/> **Node.js** | Server runtime |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="20"/> **Express.js** | HTTP server & routing |
+| **Socket.IO** | Real-time bidirectional events |
+| **Axios** | YouTube API requests |
+
+</td>
+</tr>
+</table>
 
 ### Deployment
 
-* Frontend: Netlify
-* Backend: Render
+| Service | Role |
+|:-------:|------|
+| [![Netlify](https://img.shields.io/badge/Netlify-Frontend-00C7B7?logo=netlify&logoColor=white)](https://syncmusicstream.netlify.app/) | Static hosting for Flutter Web build |
+| [![Render](https://img.shields.io/badge/Render-Backend-46E3B7?logo=render&logoColor=white)](https://render.com) | Node.js server with WebSocket support |
 
 ---
 
 ## 📂 Project Structure
 
-```text
+```
 Real-Time_SynchronizedMusicStreamingWebApplication/
-│
-├── sync_music_web/        # Flutter Web frontend
-│   ├── lib/
-│   ├── assets/
-│   ├── web/
-│   └── pubspec.yaml
-│
-├── sync_music_server/     # Node.js backend
-│   ├── server.js
-│   ├── package.json
-│   └── ...
-│
+├── lib/
+│   └── main.dart              # Flutter app — UI, Socket.IO client, YouTube player
+├── assets/
+│   └── bg.jpg                 # Background image asset
+├── web/
+│   ├── index.html             # Web entry point
+│   └── manifest.json          # PWA manifest
+├── server.js                  # Node.js backend — rooms, sync, YouTube search proxy
+├── package.json               # Node.js dependencies
+├── pubspec.yaml               # Flutter dependencies
 └── README.md
 ```
 
@@ -66,107 +150,101 @@ Real-Time_SynchronizedMusicStreamingWebApplication/
 
 ## 🚀 Getting Started
 
-### Clone the Repository
+### Prerequisites
+
+| Tool | Version | Install |
+|------|---------|---------|
+| Flutter SDK | ≥ 3.0 | [flutter.dev/docs/get-started](https://docs.flutter.dev/get-started/install) |
+| Node.js | ≥ 18 | [nodejs.org](https://nodejs.org) |
+| YouTube Data API Key | v3 | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
+
+### 1 · Clone the Repository
 
 ```bash
 git clone https://github.com/Einsteinium01/Real-Time_SynchronizedMusicStreamingWebApplication.git
 cd Real-Time_SynchronizedMusicStreamingWebApplication
 ```
 
----
-
-## Frontend Setup
-
-Navigate to the Flutter project:
+### 2 · Start the Backend
 
 ```bash
-cd sync_music_web
+# Install dependencies
+npm install
+
+# Set your YouTube API key
+#   Linux / macOS:
+export YT_API_KEY="your_youtube_api_key"
+#   Windows (PowerShell):
+$env:YT_API_KEY="your_youtube_api_key"
+
+# Start the server
+node server.js
+# → Server running on port 3000
 ```
 
-Install dependencies:
+### 3 · Run the Frontend
 
 ```bash
+# Install Flutter dependencies
 flutter pub get
-```
 
-Run the application:
-
-```bash
+# Launch in Chrome
 flutter run -d chrome
 ```
 
-Build for production:
+### 4 · Build for Production
 
 ```bash
 flutter build web
+# Output: build/web/ — deploy to any static host
 ```
+
+> [!TIP]
+> For local development, update the backend URL in [`lib/main.dart`](lib/main.dart) from `https://ghochu.onrender.com` to `http://localhost:3000`.
 
 ---
 
-## Backend Setup
+## 🗺️ Roadmap
 
-Navigate to the backend folder:
-
-```bash
-cd sync_music_server
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the server:
-
-```bash
-node server.js
-```
+- [ ] 🔐 User authentication & display names
+- [ ] 📃 Playlist & queue management
+- [ ] 💬 In-room chat system
+- [ ] 🔊 Volume synchronization
+- [ ] 👑 Admin / host controls
+- [ ] 📜 Recently played & room history
+- [ ] 🧠 Improved sync algorithm (NTP-style offset)
+- [ ] 📱 Progressive Web App (PWA) support
 
 ---
 
-## 🔄 How It Works
+## 🤝 Contributing
 
-1. A user creates or joins a room.
-2. The backend maintains the current room state, including:
+Contributions are welcome! Here's how:
 
-   * Current YouTube Video ID
-   * Playback timestamp
-   * Play/Pause status
-3. Whenever a user performs an action (play, pause, seek, or change video), the backend broadcasts the update to every participant in the room using Socket.IO.
-4. Every connected client updates its player, ensuring all users stay synchronized.
-
----
-
-## 📸 Screenshots
-
-<img width="1918" height="872" alt="image" src="https://github.com/user-attachments/assets/06936dd4-5032-4b5f-bcea-4c0502e6fd8c" />
-
----
-
-## 🔮 Future Improvements
-
-* User authentication
-* Playlist support
-* Chat system
-* Volume synchronization
-* Admin controls
-* Playback queue
-* Recently played songs
-* Room history
-* Better synchronization algorithms
-* Progressive Web App (PWA) support
+1. **Fork** the repository  
+2. **Create** a feature branch — `git checkout -b feat/amazing-feature`  
+3. **Commit** your changes — `git commit -m "feat: add amazing feature"`  
+4. **Push** to your branch — `git push origin feat/amazing-feature`  
+5. **Open** a Pull Request  
 
 ---
 
 ## 👨‍💻 Author
 
-**Ankit Goswami**
-
-GitHub: https://github.com/Einsteinium01
+<a href="https://github.com/Einsteinium01">
+  <img src="https://img.shields.io/badge/Ankit_Goswami-Einsteinium01-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+</a>
 
 ---
 
 ## 📄 License
 
-This project is intended for educational and learning purposes.
+This project is intended for **educational and learning purposes**.
+
+---
+
+<div align="center">
+
+**If you found this useful, consider giving it a ⭐**
+
+</div>
